@@ -203,26 +203,6 @@ export default function Dashboard() {
             )}
           </div>
         </section>
-        {/* Tasks Section
-        <section className="mt-10">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold text-white">Today's Tasks</h2>
-              <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400">
-                {tasks.length}
-              </span>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4 shadow-xl backdrop-blur-sm">
-            <TaskList
-              tasks={tasks}
-              onComplete={handleTask}
-              onDelete={handleDelete}
-              onEdit={handleEditTask}
-            />
-          </div>
-        </section> */}
       </main>
     </div>
   );
