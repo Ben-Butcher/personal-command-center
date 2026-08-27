@@ -1,29 +1,25 @@
 import FocusCard from "./FocusCard";
+import TaskForm from "./TaskForm";
 import { useState } from "react";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([
     {
-      id: 0,
+      id: 1,
       title: "Finish React Dashboard",
       priority: "High",
       isCompleted: false,
     },
     {
-      id: 1,
+      id: 2,
       title: "Practice React Hooks",
       priority: "Medium",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Work on WeGro",
-      priority: "High",
       isCompleted: false,
     },
   ]);
 
   const completedTasksCount = tasks.filter((task) => task.isCompleted).length;
+
   const handleComplete = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -31,6 +27,17 @@ export default function Dashboard() {
       ),
     );
   };
+
+  function handleAddTask(title, priority) {
+    const newTask = {
+      id: Date.now(),
+      title: title,
+      priority: priority,
+      isCompleted: false,
+    };
+
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  }
 
   const date = new Date();
   const day = getDay(date.getDay());
@@ -95,6 +102,8 @@ export default function Dashboard() {
             Progress {completedTasksCount} / {tasks.length}
           </p>
         </div>
+
+        <TaskForm onAddTask={handleAddTask} />
 
         {tasks.map((item) => (
           <FocusCard

@@ -1,11 +1,21 @@
 import { useState } from "react";
 
-export default function TaskForm() {
+export default function TaskForm({ onAddTask }) {
   const [taskTitle, setTaskTitle] = useState("");
-  const [taskPriority, setTaskPriority] = useState("high");
+  const [taskPriority, setTaskPriority] = useState("Medium");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!taskTitle.trim()) return;
+
+    onAddTask(taskTitle.trim(), taskPriority);
+    setTaskTitle("");
+    setTaskPriority("Medium");
+  };
 
   return (
-    <form action="#">
+    <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="task-title">Task Title</label>
         <input
@@ -13,6 +23,7 @@ export default function TaskForm() {
           id="task-title"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
+          placeholder="Enter task title..."
         />
       </div>
       <div>
@@ -23,9 +34,9 @@ export default function TaskForm() {
           value={taskPriority}
           onChange={(e) => setTaskPriority(e.target.value)}
         >
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
         </select>
       </div>
       <div>
