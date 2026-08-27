@@ -1,17 +1,25 @@
 import FocusCard from "../components/FocusCard";
+import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { useState } from "react";
-import { tasks } from "../data/tasks";
+import { initialTasks } from "../data/tasks";
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState(tasks);
+  const [tasks, setTasks] = useState(initialTasks);
 
-  const completedTasksCount = tasks.filter((task) => task.isCompleted).length;
+  const completedTasksCount = tasks.filter(
+    (task) => task.status === "completed",
+  ).length;
 
   const handleTask = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
+        task.id === id
+          ? {
+              ...task,
+              status: task.status === "completed" ? "in-progress" : "completed",
+            }
+          : task,
       ),
     );
   };
@@ -21,7 +29,10 @@ export default function Dashboard() {
       id: Date.now(),
       title: title,
       priority: priority,
-      isCompleted: false,
+      status: "in-progress",
+      projectId: 1,
+      dueDate: "2026-08-28",
+      createdAt: "2026-08-27",
     };
 
     setTasks((prevTasks) => [...prevTasks, newTask]);
@@ -93,15 +104,7 @@ export default function Dashboard() {
 
         <TaskForm onAddTask={handleAddTask} />
 
-        {tasks.map((item) => (
-          <FocusCard
-            key={item.id}
-            title={item.title}
-            priority={item.priority}
-            isCompleted={item.isCompleted}
-            onComplete={() => handleComplete(item.id)}
-          />
-        ))}
+        <TaskList tasks={tasks} />
       </main>
     </>
   );
