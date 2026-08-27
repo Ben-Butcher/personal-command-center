@@ -22,6 +22,8 @@ export default function Dashboard() {
       isCompleted: false,
     },
   ]);
+
+  const completedTasksCount = tasks.filter((task) => task.isCompleted).length;
   const handleComplete = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -88,6 +90,9 @@ export default function Dashboard() {
           <h3>Good {greeting}, Ben</h3>
           <p>
             {day}, {dayDate} {month}
+          </p>
+          <p>
+            Progress {completedTasksCount} / {tasks.length}
           </p>
         </div>
 
