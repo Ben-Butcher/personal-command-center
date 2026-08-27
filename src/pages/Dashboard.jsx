@@ -5,7 +5,7 @@ import { initialTasks } from "../data/tasks";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState(initialTasks);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const completedTasksCount = tasks.filter(
     (task) => task.status === "completed",
   ).length;
@@ -41,6 +41,13 @@ export default function Dashboard() {
 
     setTasks((prevTasks) => [...prevTasks, newTask]);
   }
+  const handleEditTask = (id, title, priority) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, title, priority } : task,
+      ),
+    );
+  };
 
   const handleDelete = (id) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
@@ -151,8 +158,52 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
-        <TaskForm onAddTask={handleAddTask} />
-        {/* Tasks Section */}
+        {/* {Add task} */}
+        <section className="mt-10">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <h2 className="text-xl font-bold text-white">Today's Tasks</h2>
+              <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400">
+                {tasks.length}
+              </span>
+            </div>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-400"
+            >
+              + Add Task
+            </button>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4 shadow-xl backdrop-blur-sm">
+            <TaskList
+              tasks={tasks}
+              onComplete={handleTask}
+              onDelete={handleDelete}
+              onEdit={handleEditTask}
+            />
+            {isModalOpen && (
+              <div
+                className="fixed inset-0 z-20 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm px-4"
+                onClick={() => setIsModalOpen(false)}
+              >
+                <div
+                  className="w-full max-w-md rounded-2xl border border-slate-800/80 bg-slate-900 p-6 shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h2 className="mb-4 text-lg font-bold text-white">
+                    New Task
+                  </h2>
+                  <TaskForm
+                    onAddTask={handleAddTask}
+                    onClose={() => setIsModalOpen(false)}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+        {/* Tasks Section
         <section className="mt-10">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -168,9 +219,10 @@ export default function Dashboard() {
               tasks={tasks}
               onComplete={handleTask}
               onDelete={handleDelete}
+              onEdit={handleEditTask}
             />
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );
