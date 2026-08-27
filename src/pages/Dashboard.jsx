@@ -1,26 +1,14 @@
-import FocusCard from "./FocusCard";
-import TaskForm from "./TaskForm";
+import FocusCard from "../components/FocusCard";
+import TaskForm from "../components/TaskForm";
 import { useState } from "react";
+import { tasks } from "../data/tasks";
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Finish React Dashboard",
-      priority: "High",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Practice React Hooks",
-      priority: "Medium",
-      isCompleted: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(tasks);
 
   const completedTasksCount = tasks.filter((task) => task.isCompleted).length;
 
-  const handleComplete = (id) => {
+  const handleTask = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,

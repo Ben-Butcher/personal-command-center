@@ -1,17 +1,11 @@
-export default function FocusCard({
-  id,
-  title,
-  priority,
-  isCompleted,
-  onComplete,
-}) {
+export default function FocusCard({ id, title, priority, status, onComplete }) {
   return (
     <div className="focus">
       <p>{title}</p>
       <p>{priority}</p>
 
       <button onClick={() => onComplete(id)}>
-        {isCompleted ? "Completed" : "Mark As Completed"}
+        {status === "completed" ? "Completed" : "Mark As Completed"}
       </button>
     </div>
   );
