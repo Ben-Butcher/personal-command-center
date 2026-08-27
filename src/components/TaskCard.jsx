@@ -1,4 +1,4 @@
-export default function TaskCard({ task, onComplete }) {
+export default function TaskCard({ task, onComplete, onDelete }) {
   const isCompleted = task.status === "completed";
 
   return (
@@ -35,16 +35,24 @@ export default function TaskCard({ task, onComplete }) {
         </div>
       </div>
 
-      <button
-        onClick={() => onComplete(task.id)}
-        className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-          isCompleted
-            ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
-            : "bg-indigo-500 text-white hover:bg-indigo-400"
-        }`}
-      >
-        {isCompleted ? "Mark Incomplete" : "Complete"}
-      </button>
+      <div>
+        <button
+          onClick={() => onDelete(task.id)}
+          className="rounded-lg px-4 py-2 text-sm font-medium transition-colors text-red-400 hover:text-red-300"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => onComplete(task.id)}
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+            isCompleted
+              ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
+              : "bg-indigo-500 text-white hover:bg-indigo-400"
+          }`}
+        >
+          {isCompleted ? "Mark Incomplete" : "Complete"}
+        </button>
+      </div>
     </div>
   );
 }

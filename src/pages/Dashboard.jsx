@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TaskList from "../components/TaskList";
+import TaskForm from "../components/TaskForm";
 import { initialTasks } from "../data/tasks";
 
 export default function Dashboard() {
@@ -25,6 +26,24 @@ export default function Dashboard() {
           : task,
       ),
     );
+  };
+
+  function handleAddTask(title, priority) {
+    const newTask = {
+      id: Date.now(),
+      title: title,
+      priority: priority,
+      status: "in-progress",
+      projectId: 1,
+      dueDate: "2026-08-28",
+      createdAt: "2026-08-27",
+    };
+
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  }
+
+  const handleDelete = (id) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
   const date = new Date();
@@ -132,7 +151,7 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
-
+        <TaskForm onAddTask={handleAddTask} />
         {/* Tasks Section */}
         <section className="mt-10">
           <div className="mb-4 flex items-center justify-between">
@@ -145,7 +164,11 @@ export default function Dashboard() {
           </div>
 
           <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4 shadow-xl backdrop-blur-sm">
-            <TaskList tasks={tasks} onComplete={handleTask} />
+            <TaskList
+              tasks={tasks}
+              onComplete={handleTask}
+              onDelete={handleDelete}
+            />
           </div>
         </section>
       </main>
