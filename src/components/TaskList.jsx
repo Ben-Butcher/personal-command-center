@@ -1,12 +1,9 @@
-export default function TaskList({ tasks }) {
+import TaskCard from "./TaskCard";
+export default function TaskList({ tasks, onComplete }) {
   return (
     <div className="task-list">
       {tasks.map((task) => (
-        <div key={task.id} className="task">
-          <h3>{task.title}</h3>
-          <p>Priority: {task.priority}</p>
-          <p>Status: {task.status}</p>
-        </div>
+        <TaskCard key={task.id} task={task} onComplete={onComplete} />
       ))}
     </div>
   );

@@ -1,4 +1,3 @@
-import FocusCard from "../components/FocusCard";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { useState } from "react";
@@ -10,7 +9,10 @@ export default function Dashboard() {
   const completedTasksCount = tasks.filter(
     (task) => task.status === "completed",
   ).length;
-
+  const progressPercentage =
+    tasks.length === 0
+      ? 0
+      : Math.round((completedTasksCount / tasks.length) * 100);
   const handleTask = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -97,14 +99,22 @@ export default function Dashboard() {
           <p>
             {day}, {dayDate} {month}
           </p>
-          <p>
-            Progress {completedTasksCount} / {tasks.length}
-          </p>
         </div>
 
-        <TaskForm onAddTask={handleAddTask} />
+        <div className="progress-center">
+          <h3>Today's Progress</h3>
+          <p>
+            {completedTasksCount} of {tasks.length} tasks completed
+          </p>
+          <p>{progressPercentage}% complete</p>
+        </div>
 
-        <TaskList tasks={tasks} />
+        {/* <TaskForm onAddTask={handleAddTask} /> */}
+
+        <section className="tasks-center">
+          <h2>Today's Tasks</h2>
+          <TaskList tasks={tasks} onComplete={handleTask} />
+        </section>
       </main>
     </>
   );
