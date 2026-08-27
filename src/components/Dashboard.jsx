@@ -1,5 +1,6 @@
 import FocusCard from "./FocusCard";
 import { useState } from "react";
+
 export default function Dashboard() {
   const [tasks, setTasks] = useState([
     {
@@ -21,6 +22,13 @@ export default function Dashboard() {
       isCompleted: false,
     },
   ]);
+  const handleComplete = (id) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
+      ),
+    );
+  };
 
   const date = new Date();
   const day = getDay(date.getDay());
@@ -45,6 +53,7 @@ export default function Dashboard() {
     ];
     return months[mon];
   }
+
   function getDay(dayNum) {
     const weekDay = [
       "Sunday",
@@ -57,6 +66,7 @@ export default function Dashboard() {
     ];
     return weekDay[dayNum];
   }
+
   function getGreeting(time) {
     if (time >= 18) {
       return "Evening";
@@ -82,7 +92,13 @@ export default function Dashboard() {
         </div>
 
         {tasks.map((item) => (
-          <FocusCard key={item.id} {...item} />
+          <FocusCard
+            key={item.id}
+            title={item.title}
+            priority={item.priority}
+            isCompleted={item.isCompleted}
+            onComplete={() => handleComplete(item.id)}
+          />
         ))}
       </main>
     </>
