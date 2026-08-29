@@ -3,6 +3,7 @@ import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { initialTasks } from "../data/tasks";
 import { PRIORITY_ORDER } from "../utils/priority";
+import { getMonth, getDay, getGreeting } from "../utils/dateHelpers";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState(initialTasks);
@@ -34,7 +35,7 @@ export default function Dashboard() {
     const bCompleted = b.status === "completed";
 
     if (aCompleted !== bCompleted) {
-      return aCompleted ? 1 : -1; // incomplete tasks first
+      return aCompleted ? 1 : -1;
     }
 
     return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
@@ -70,43 +71,6 @@ export default function Dashboard() {
   const month = getMonth(date.getMonth());
   const greeting = getGreeting(date.getHours());
   const dayDate = date.getDate();
-
-  function getMonth(mon) {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    return months[mon];
-  }
-
-  function getDay(dayNum) {
-    const weekDay = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    return weekDay[dayNum];
-  }
-
-  function getGreeting(time) {
-    if (time >= 18) return "Evening";
-    if (time >= 12) return "Afternoon";
-    return "Morning";
-  }
 
   return (
     <div className="relative min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white">
