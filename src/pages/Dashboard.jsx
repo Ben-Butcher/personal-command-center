@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { initialTasks } from "../data/tasks";
@@ -6,8 +6,21 @@ import { PRIORITY_ORDER } from "../utils/priority";
 import { getMonth, getDay, getGreeting } from "../utils/dateHelpers";
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+      return savedTasks || initialTasks;
+    } catch (e) {
+      console.error(e);
+      return initialTasks;
+    }
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   const completedTasksCount = tasks.filter(
     (task) => task.status === "completed",
   ).length;
