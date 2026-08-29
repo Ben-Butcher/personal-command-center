@@ -42,15 +42,15 @@ export function useTasks() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  function handleAddTask(title, priority) {
+  function handleAddTask(title, priority, dueDate) {
     const newTask = {
       id: Date.now(),
       title: title,
       priority: priority,
       status: "in-progress",
       projectId: 1,
-      dueDate: "2026-08-28",
-      createdAt: "2026-08-27",
+      dueDate: dueDate || new Date().toISOString().split("T")[0],
+      createdAt: new Date().toISOString().split("T")[0],
     };
 
     setTasks((prevTasks) => [...prevTasks, newTask]);

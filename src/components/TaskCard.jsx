@@ -6,6 +6,46 @@ export default function TaskCard({ task, onComplete, onDelete, onEdit }) {
   const [draftTitle, setDraftTitle] = useState(task.title);
   const [draftPriority, setDraftPriority] = useState(task.priority);
 
+  const dueDate = task.dueDate ? new Date(`${task.dueDate}T00:00:00`) : null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const daysUntilDue = dueDate ? Math.ceil((dueDate - today) / 86400000) : null;
+
+  let dueBadge = {
+    label: "No due date",
+    className: "bg-slate-700 text-slate-300",
+  };
+
+  if (dueDate) {
+    if (daysUntilDue < 0) {
+      dueBadge = { label: "Overdue", className: "bg-red-500/10 text-red-400" };
+    } else if (daysUntilDue === 0) {
+      dueBadge = {
+        label: "Due today",
+        className: "bg-amber-500/10 text-amber-400",
+      };
+    } else if (daysUntilDue <= 3) {
+      dueBadge = {
+        label: "Due soon",
+        className: "bg-indigo-500/10 text-indigo-300",
+      };
+    } else {
+      dueBadge = {
+        label: "On track",
+        className: "bg-emerald-500/10 text-emerald-400",
+      };
+    }
+  }
+
+  const formattedDueDate = dueDate
+    ? dueDate.toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : null;
+
   const handleSave = () => {
     if (!draftTitle.trim()) return;
     onEdit(task.id, draftTitle.trim(), draftPriority);
@@ -72,6 +112,16 @@ export default function TaskCard({ task, onComplete, onDelete, onEdit }) {
         </h3>
 
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          {formattedDueDate && (
+            <span className="rounded-full bg-slate-700 px-2.5 py-1 text-slate-300">
+              Due {formattedDueDate}
+            </span>
+          )}
+
+          <span className={`rounded-full px-2.5 py-1 ${dueBadge.className}`}>
+            {dueBadge.label}
+          </span>
+
           <span className="rounded-full bg-slate-700 px-2.5 py-1 text-slate-300">
             {task.priority}
           </span>

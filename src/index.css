@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+.date-input {
+  color-scheme: dark;
+  appearance: none;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8) sepia(1) saturate(1.4) hue-rotate(180deg) brightness(1.1);
+  opacity: 0.9;
+}
+
+.date-input::-webkit-datetime-edit-text,
+.date-input::-webkit-datetime-edit-month-field,
+.date-input::-webkit-datetime-edit-day-field,
+.date-input::-webkit-datetime-edit-year-field {
+  color: rgb(226 232 240);
+}

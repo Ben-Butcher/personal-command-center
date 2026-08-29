@@ -1,17 +1,20 @@
 import { useState } from "react";
 
 export default function TaskForm({ onAddTask, onClose }) {
+  const today = new Date().toISOString().split("T")[0];
   const [taskTitle, setTaskTitle] = useState("");
   const [taskPriority, setTaskPriority] = useState("medium");
+  const [taskDueDate, setTaskDueDate] = useState(today);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!taskTitle.trim()) return;
 
-    onAddTask(taskTitle.trim(), taskPriority);
+    onAddTask(taskTitle.trim(), taskPriority, taskDueDate || today);
     setTaskTitle("");
     setTaskPriority("medium");
+    setTaskDueDate(today);
     onClose();
   };
 
@@ -53,6 +56,24 @@ export default function TaskForm({ onAddTask, onClose }) {
           <option value="medium">Medium</option>
           <option value="low">Low</option>
         </select>
+      </div>
+
+      <div>
+        <label
+          htmlFor="task-due-date"
+          className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-slate-400"
+        >
+          Due Date
+        </label>
+        <input
+          type="date"
+          name="date"
+          id="task-due-date"
+          min={today}
+          value={taskDueDate || today}
+          onChange={(e) => setTaskDueDate(e.target.value)}
+          className="date-input w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-slate-100 focus:border-indigo-500 focus:outline-none"
+        />
       </div>
 
       <div className="mt-2 flex justify-end gap-2">
