@@ -1,47 +1,21 @@
-import { useState, useEffect } from "react";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
-import { initialTasks } from "../data/tasks";
 import { PRIORITY_ORDER } from "../utils/priority";
 import { getMonth, getDay, getGreeting } from "../utils/dateHelpers";
+import { useTasks } from "../hooks/useTasks";
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState(() => {
-    try {
-      const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-      return savedTasks || initialTasks;
-    } catch (e) {
-      console.error(e);
-      return initialTasks;
-    }
-  });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  const completedTasksCount = tasks.filter(
-    (task) => task.status === "completed",
-  ).length;
-
-  const progressPercentage =
-    tasks.length === 0
-      ? 0
-      : Math.round((completedTasksCount / tasks.length) * 100);
-
-  const handleTask = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              status: task.status === "completed" ? "in-progress" : "completed",
-            }
-          : task,
-      ),
-    );
-  };
+  const {
+    tasks,
+    isModalOpen,
+    progressPercentage,
+    completedTasksCount,
+    handleAddTask,
+    handleDelete,
+    handleEditTask,
+    handleToggleComplete,
+    setIsModalOpen,
+  } = useTasks();
 
   const sortedTasks = [...tasks].sort((a, b) => {
     const aCompleted = a.status === "completed";
@@ -53,31 +27,6 @@ export default function Dashboard() {
 
     return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
   });
-
-  function handleAddTask(title, priority) {
-    const newTask = {
-      id: Date.now(),
-      title: title,
-      priority: priority,
-      status: "in-progress",
-      projectId: 1,
-      dueDate: "2026-08-28",
-      createdAt: "2026-08-27",
-    };
-
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  }
-  const handleEditTask = (id, title, priority) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, title, priority } : task,
-      ),
-    );
-  };
-
-  const handleDelete = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  };
 
   const date = new Date();
   const day = getDay(date.getDay());
@@ -167,7 +116,7 @@ export default function Dashboard() {
           <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4 shadow-xl backdrop-blur-sm">
             <TaskList
               tasks={sortedTasks}
-              onComplete={handleTask}
+              onComplete={handleToggleComplete}
               onDelete={handleDelete}
               onEdit={handleEditTask}
             />
