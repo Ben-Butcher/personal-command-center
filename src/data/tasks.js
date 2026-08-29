@@ -2,7 +2,7 @@ export const initialTasks = [
   {
     id: 1,
     title: "Finish React Dashboard",
-    priority: "high",
+    priority: "low",
     status: "in-progress",
     projectId: 1,
     dueDate: "2026-08-28",

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function TaskForm({ onAddTask, onClose }) {
   const [taskTitle, setTaskTitle] = useState("");
-  const [taskPriority, setTaskPriority] = useState("Medium");
+  const [taskPriority, setTaskPriority] = useState("medium");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,7 +11,7 @@ export default function TaskForm({ onAddTask, onClose }) {
 
     onAddTask(taskTitle.trim(), taskPriority);
     setTaskTitle("");
-    setTaskPriority("Medium");
+    setTaskPriority("medium");
     onClose();
   };
 
@@ -49,9 +49,9 @@ export default function TaskForm({ onAddTask, onClose }) {
           onChange={(e) => setTaskPriority(e.target.value)}
           className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-slate-100 focus:border-indigo-500 focus:outline-none"
         >
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
         </select>
       </div>
 

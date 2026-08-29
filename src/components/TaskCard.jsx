@@ -32,9 +32,9 @@ export default function TaskCard({ task, onComplete, onDelete, onEdit }) {
           onChange={(e) => setDraftPriority(e.target.value)}
           className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-slate-100 focus:border-indigo-500 focus:outline-none"
         >
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
         </select>
         <div className="flex justify-end gap-2">
           <button

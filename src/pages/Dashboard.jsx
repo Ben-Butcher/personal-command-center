@@ -2,6 +2,7 @@ import { useState } from "react";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { initialTasks } from "../data/tasks";
+import { PRIORITY_ORDER } from "../utils/priority";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState(initialTasks);
@@ -27,6 +28,17 @@ export default function Dashboard() {
       ),
     );
   };
+
+  const sortedTasks = [...tasks].sort((a, b) => {
+    const aCompleted = a.status === "completed";
+    const bCompleted = b.status === "completed";
+
+    if (aCompleted !== bCompleted) {
+      return aCompleted ? 1 : -1; // incomplete tasks first
+    }
+
+    return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+  });
 
   function handleAddTask(title, priority) {
     const newTask = {
@@ -177,7 +189,7 @@ export default function Dashboard() {
 
           <div className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4 shadow-xl backdrop-blur-sm">
             <TaskList
-              tasks={tasks}
+              tasks={sortedTasks}
               onComplete={handleTask}
               onDelete={handleDelete}
               onEdit={handleEditTask}
